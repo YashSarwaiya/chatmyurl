@@ -4,17 +4,19 @@ import { useAuthenticator } from "@aws-amplify/ui-react";
 import * as queries from "../graphql/queries";
 import * as mutations from "../graphql/mutations";
 import * as subscriptions from "../graphql/subscriptions";
+import type {
+  MessagesByUrlQuery,
+  CreateMessageMutation,
+  OnCreateMessageSubscription,
+  ModelSortDirection,
+  Message as GraphQLMessage,
+} from "../API";
+import type { GraphQLResult } from "@aws-amplify/api-graphql";
 
 const client = generateClient();
 
-interface Message {
-  id: string;
-  url: string;
-  userId: string;
-  username: string;
-  message: string;
-  createdAt: string;
-}
+// Use the GraphQL-generated Message type directly
+type Message = GraphQLMessage;
 
 export function useChat(currentUrl: string) {
   const { user } = useAuthenticator((context) => [context.user]);
@@ -28,17 +30,20 @@ export function useChat(currentUrl: string) {
     try {
       setLoading(true);
 
-      const result: any = await client.graphql({
+      const result = (await client.graphql({
         query: queries.messagesByUrl,
         variables: {
           url: currentUrl,
-          sortDirection: "ASC",
+          sortDirection: "ASC" as ModelSortDirection,
           limit: 1000,
         },
-      });
+      })) as GraphQLResult<MessagesByUrlQuery>;
 
       if (result.data?.messagesByUrl?.items) {
-        setMessages(result.data.messagesByUrl.items);
+        const filteredMessages = result.data.messagesByUrl.items.filter(
+          (item): item is Message => item !== null
+        );
+        setMessages(filteredMessages);
       }
     } catch (error) {
       console.error("Error fetching messages:", error);
@@ -58,8 +63,8 @@ export function useChat(currentUrl: string) {
         query: subscriptions.onCreateMessage,
       })
       .subscribe({
-        next: ({ data }: any) => {
-          const newMessage = data.onCreateMessage;
+        next: (event: GraphQLResult<OnCreateMessageSubscription>) => {
+          const newMessage = event.data?.onCreateMessage;
           if (newMessage && newMessage.url === currentUrl) {
             setMessages((prev) => {
               if (prev.some((msg) => msg.id === newMessage.id)) {
@@ -87,7 +92,7 @@ export function useChat(currentUrl: string) {
     try {
       setSending(true);
 
-      await client.graphql({
+      (await client.graphql({
         query: mutations.createMessage,
         variables: {
           input: {
@@ -99,7 +104,7 @@ export function useChat(currentUrl: string) {
             createdAt: new Date().toISOString(),
           },
         },
-      });
+      })) as GraphQLResult<CreateMessageMutation>;
     } catch (error) {
       console.error("Error sending message:", error);
       console.error("Full send error:", JSON.stringify(error, null, 2));

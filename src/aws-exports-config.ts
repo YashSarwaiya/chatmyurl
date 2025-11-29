@@ -1,12 +1,7 @@
-// import { Amplify } from "aws-amplify";
-// import awsconfig from "./aws-exports";
-
-// Amplify.configure(awsconfig);
-
-// export default Amplify;
 import { Amplify } from "aws-amplify";
+import { type ResourcesConfig } from "aws-amplify";
 
-const awsconfig = {
+const awsconfig: ResourcesConfig = {
   Auth: {
     Cognito: {
       userPoolId: "us-east-1_b1zQPLRxx",
@@ -31,7 +26,7 @@ const awsconfig = {
       endpoint:
         "https://nwbcv32rg5furd2nz3x4qk2xi4.appsync-api.us-east-1.amazonaws.com/graphql",
       region: "us-east-1",
-      defaultAuthMode: "userPool", // Use Cognito User Pools authentication
+      defaultAuthMode: "userPool" as const, // Use Cognito User Pools authentication
     },
   },
 };
