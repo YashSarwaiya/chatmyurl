@@ -2,16 +2,12 @@
   "manifest_version": 3,
   "name": "URL Chat Extension",
   "version": "1.0.0",
-  "description": "Chat with others on the same URL",
+  "description": "Chat with others on the same URL in real-time",
   "permissions": ["storage", "activeTab", "tabs"],
   "host_permissions": ["<all_urls>"],
   "action": {
     "default_popup": "index.html",
-    "default_icon": {
-      "16": "icons/icon16.png",
-      "48": "icons/icon48.png",
-      "128": "icons/icon128.png"
-    }
+    "default_title": "URL Chat"
   },
   "background": {
     "service_worker": "src/background/background.js",
@@ -20,13 +16,11 @@
   "content_scripts": [
     {
       "matches": ["<all_urls>"],
-      "js": ["src/content/content.js"]
+      "js": ["src/content/content.js"],
+      "run_at": "document_idle"
     }
   ],
-  "web_accessible_resources": [
-    {
-      "resources": ["src/assets/*"],
-      "matches": ["<all_urls>"]
-    }
-  ]
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'self';"
+  }
 }

@@ -5,9 +5,10 @@ import { ChatInput } from "./ChatInput";
 
 interface ChatProps {
   currentUrl: string;
+  urlLoading?: boolean;
 }
 
-export function Chat({ currentUrl }: ChatProps) {
+export function Chat({ currentUrl, urlLoading }: ChatProps) {
   const { messages, loading, sending, sendMessage, currentUser } =
     useChat(currentUrl);
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -16,6 +17,28 @@ export function Chat({ currentUrl }: ChatProps) {
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
+
+  if (urlLoading) {
+    return (
+      <div className="flex items-center justify-center h-96">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mx-auto mb-4"></div>
+          <p className="text-gray-600">Detecting current page...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (!currentUrl) {
+    return (
+      <div className="flex items-center justify-center h-96">
+        <div className="text-center text-gray-500">
+          <p className="text-lg font-medium">Unable to detect page URL</p>
+          <p className="text-sm mt-2">Please reload the extension</p>
+        </div>
+      </div>
+    );
+  }
 
   if (loading) {
     return (

@@ -1,10 +1,4 @@
-import {
-  Authenticator,
-  useTheme,
-  View,
-  Image,
-  Text,
-} from "@aws-amplify/ui-react";
+import { Authenticator, useTheme, View, Text } from "@aws-amplify/ui-react";
 import "@aws-amplify/ui-react/styles.css";
 
 const components = {
