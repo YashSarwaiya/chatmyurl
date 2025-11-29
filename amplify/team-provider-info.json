@@ -1,0 +1,23 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-chatmyurl-dev-2d915-authRole",
+      "UnauthRoleArn": "arn:aws:iam::536697264473:role/amplify-chatmyurl-dev-2d915-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::536697264473:role/amplify-chatmyurl-dev-2d915-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-chatmyurl-dev-2d915-deployment",
+      "UnauthRoleName": "amplify-chatmyurl-dev-2d915-unauthRole",
+      "StackName": "amplify-chatmyurl-dev-2d915",
+      "StackId": "arn:aws:cloudformation:us-east-1:536697264473:stack/amplify-chatmyurl-dev-2d915/a8863880-cbf5-11f0-8f37-0e5a29b204c1",
+      "AmplifyAppId": "d30d6v7d9qhj6r"
+    },
+    "categories": {
+      "auth": {
+        "chatmyurle2eea0e9": {}
+      },
+      "api": {
+        "chatmyurl": {}
+      }
+    }
+  }
+}
