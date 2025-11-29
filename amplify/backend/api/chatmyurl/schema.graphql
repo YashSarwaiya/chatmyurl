@@ -1,6 +1,11 @@
 type Message
   @model
-  @auth(rules: [{ allow: private, operations: [read, create] }]) {
+  @auth(
+    rules: [
+      { allow: public, provider: apiKey, operations: [read, create] }
+      { allow: private, operations: [read, create] }
+    ]
+  ) {
   id: ID!
   url: String!
     @index(
@@ -16,7 +21,12 @@ type Message
 
 type User
   @model
-  @auth(rules: [{ allow: private, operations: [read, create] }]) {
+  @auth(
+    rules: [
+      { allow: public, provider: apiKey, operations: [read, create] }
+      { allow: private, operations: [read, create] }
+    ]
+  ) {
   id: ID!
   username: String!
   email: String!

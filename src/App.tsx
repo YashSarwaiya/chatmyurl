@@ -2,7 +2,7 @@ import { Auth } from "./components/Auth";
 import { Chat } from "./components/Chat";
 import { useAuthenticator } from "@aws-amplify/ui-react";
 import { useCurrentUrl } from "./hooks/useCurrentUrl";
-import "./aws-exports-config";
+import "./amplify-config"; // Change this line
 
 function AppContent() {
   const { user, signOut } = useAuthenticator((context) => [context.user]);
